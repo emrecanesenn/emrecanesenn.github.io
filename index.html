@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Portfolyom</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,83 +12,125 @@
     <!-- Header Section -->
     <header>
         <nav class="navbar">
-            <div class="logo">Portfolio</div>
+            <div class="logo">Portfolyo</div>
             <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#anasayfa">Anasayfa</a></li>
+                <li><a href="#hakkimda">Hakkımda</a></li>
+                <li><a href="#projeler">Projeler</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
             </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
+            <div class="nav-controls">
+                <button class="lang-switch">TR | EN</button>
+                <button class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section id="anasayfa" class="hero">
         <div class="hero-content">
-            <h1>Hello, I'm <span class="highlight">Your Name</span></h1>
-            <p class="title">Full Stack Developer</p>
-            <p class="description">I create beautiful and functional websites</p>
+            <h1>Merhaba, ben <span class="highlight">[İsminiz]</span></h1>
+            <p class="title">Full Stack Geliştirici</p>
+            <p class="description">Güzel ve işlevsel web siteleri oluşturuyorum</p>
             <div class="cta-buttons">
-                <a href="#projects" class="btn primary">View My Work</a>
-                <a href="#contact" class="btn secondary">Contact Me</a>
+                <a href="#projeler" class="btn primary">Çalışmalarımı Gör</a>
+                <a href="#iletisim" class="btn secondary">Bana Ulaş</a>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <p>Your introduction and background here...</p>
-            </div>
-            <div class="skills">
-                <h3>My Skills</h3>
-                <div class="skill-items">
-                    <div class="skill">HTML</div>
-                    <div class="skill">CSS</div>
-                    <div class="skill">JavaScript</div>
-                    <div class="skill">React</div>
-                    <div class="skill">Node.js</div>
+    <section id="hakkimda" class="about">
+        <div class="about-grid">
+            <div class="about-content">
+                <h2>Hakkımda</h2>
+                <p>Merhaba! Ben [İsminiz], full-stack web geliştirici olarak çalışıyorum...</p>
+                <div class="skill-container">
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>Frontend</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <!-- Diğer skill barları -->
                 </div>
+            </div>
+            <div class="about-image">
+                <img src="images/profile.jpg" alt="Profil">
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <h2>My Projects</h2>
+    <section id="projeler" class="projects">
+        <h2>Projelerim</h2>
         <div class="project-grid">
-            <!-- Project cards will be added here -->
+            <div class="project-card">
+                <img src="images/proje1.jpg" alt="Proje 1" class="project-image">
+                <div class="project-info">
+                    <h3>E-Ticaret Platformu</h3>
+                    <p>Modern ve responsive e-ticaret çözümü</p>
+                    <div class="project-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <a href="#" class="btn primary">Detaylar</a>
+                </div>
+            </div>
+            <!-- Diğer proje kartları -->
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <h2>Get In Touch</h2>
+    <section id="iletisim" class="contact">
+        <h2>İletişim</h2>
         <div class="contact-content">
             <form id="contact-form">
-                <input type="text" placeholder="Name" required>
+                <input type="text" placeholder="İsim" required>
                 <input type="email" placeholder="Email" required>
-                <textarea placeholder="Message" required></textarea>
-                <button type="submit" class="btn primary">Send Message</button>
+                <textarea placeholder="Mesaj" required></textarea>
+                <button type="submit" class="btn primary">Mesaj Gönder</button>
             </form>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>İletişim</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> email@domain.com</li>
+                    <li><i class="fas fa-phone"></i> +90 555 555 55 55</li>
+                    <li><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Bağlantılar</h3>
+                <ul class="footer-links">
+                    <li><a href="#anasayfa">Anasayfa</a></li>
+                    <li><a href="#hakkimda">Hakkımda</a></li>
+                    <li><a href="#projeler">Projeler</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Sosyal Medya</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
         </div>
-        <p>&copy; 2024 Your Name. All rights reserved.</p>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tüm hakları saklıdır.</p>
+        </div>
     </footer>
 
     <script src="js/main.js"></script>

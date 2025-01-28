@@ -27,6 +27,10 @@ burger.addEventListener('click', () => {
             link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
         }
     });
+    
+    // Menü açıkken scrollu engelle
+    document.body.style.overflow = 
+        navLinks.classList.contains('nav-active') ? 'hidden' : 'auto';
 });
 
 // Smooth Scroll
@@ -118,4 +122,83 @@ ScrollReveal().reveal('.project-card', {
     interval: 200,
     distance: '30px',
     origin: 'bottom'
+});
+
+// Theme Toggler
+const themeToggle = document.querySelector('.theme-toggle');
+const htmlElement = document.documentElement;
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    htmlElement.setAttribute('data-theme', newTheme);
+    
+    // Icon değiştir
+    themeToggle.innerHTML = newTheme === 'light' 
+        ? '<i class="fas fa-moon"></i>' 
+        : '<i class="fas fa-sun"></i>';
+    
+    localStorage.setItem('theme', newTheme);
+});
+
+// Dil Değiştirici
+const langSwitch = document.querySelector('.lang-switch');
+let currentLang = 'TR';
+
+langSwitch.addEventListener('click', () => {
+    currentLang = currentLang === 'TR' ? 'EN' : 'TR';
+    langSwitch.textContent = `${currentLang === 'TR' ? 'EN' : 'TR'} | ${currentLang}`;
+    updateContent(currentLang);
+});
+
+// Skill Bar Animasyonu
+const skillBars = document.querySelectorAll('.progress');
+
+const animateSkillBars = () => {
+    skillBars.forEach(bar => {
+        const percentage = bar.getAttribute('data-progress');
+        bar.style.width = percentage;
+    });
+};
+
+// Scroll animasyonları
+ScrollReveal().reveal('.about-content', {
+    origin: 'left',
+    distance: '50px',
+    duration: 1000,
+    delay: 200
+});
+
+ScrollReveal().reveal('.about-image', {
+    origin: 'right',
+    distance: '50px',
+    duration: 1000,
+    delay: 200
+});
+
+ScrollReveal().reveal('.project-card', {
+    origin: 'bottom',
+    distance: '30px',
+    duration: 800,
+    interval: 200
+});
+
+// Intersection Observer for Skill Bars
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateSkillBars();
+        }
+    });
+});
+
+observer.observe(document.querySelector('.skill-container'));
+
+// Sayfa yüklendiğinde kaydedilmiş temayı uygula
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    htmlElement.setAttribute('data-theme', savedTheme);
+    themeToggle.innerHTML = savedTheme === 'light' 
+        ? '<i class="fas fa-moon"></i>' 
+        : '<i class="fas fa-sun"></i>';
 });
