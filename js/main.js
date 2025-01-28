@@ -128,17 +128,17 @@ ScrollReveal().reveal('.project-card', {
 const themeToggle = document.querySelector('.theme-toggle');
 const htmlElement = document.documentElement;
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    htmlElement.setAttribute('data-theme', newTheme);
-    
-    // Icon değiştir
-    themeToggle.innerHTML = newTheme === 'light' 
+function setTheme(theme) {
+    htmlElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeToggle.innerHTML = theme === 'light' 
         ? '<i class="fas fa-moon"></i>' 
         : '<i class="fas fa-sun"></i>';
-    
-    localStorage.setItem('theme', newTheme);
+}
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    setTheme(currentTheme === 'light' ? 'dark' : 'light');
 });
 
 // Dil Değiştirici
@@ -197,8 +197,84 @@ observer.observe(document.querySelector('.skill-container'));
 // Sayfa yüklendiğinde kaydedilmiş temayı uygula
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    themeToggle.innerHTML = savedTheme === 'light' 
-        ? '<i class="fas fa-moon"></i>' 
-        : '<i class="fas fa-sun"></i>';
+    setTheme(savedTheme);
+});
+
+// Typing Animation
+const titles = ["Emrecan Esen", "Schedarp"];
+const highlightSpan = document.querySelector('.highlight');
+let titleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function typeEffect() {
+    const currentTitle = titles[titleIndex];
+    
+    if (isDeleting) {
+        highlightSpan.textContent = currentTitle.substring(0, charIndex-1);
+        charIndex--;
+    } else {
+        highlightSpan.textContent = currentTitle.substring(0, charIndex+1);
+        charIndex++;
+    }
+
+    if (!isDeleting && charIndex === currentTitle.length) {
+        isDeleting = true;
+        setTimeout(typeEffect, 2000);
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        titleIndex = (titleIndex + 1) % titles.length;
+        setTimeout(typeEffect, 500);
+    } else {
+        setTimeout(typeEffect, isDeleting ? 100 : 200);
+    }
+}
+
+// Skills Data
+const skills = [
+    { name: "Frontend Development", level: 90 },
+    { name: "Backend Development", level: 85 },
+    { name: "Database Management", level: 80 },
+    { name: "UI/UX Design", level: 75 },
+    { name: "DevOps", level: 70 }
+];
+
+// Create Skills HTML
+function renderSkills() {
+    const skillContainer = document.querySelector('.skill-container');
+    skillContainer.innerHTML = skills.map(skill => `
+        <div class="skill-bar">
+            <div class="skill-info">
+                <span>${skill.name}</span>
+                <span>${skill.level}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" data-progress="${skill.level}%" style="width: 0%"></div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Start typing animation
+    typeEffect();
+    
+    // Render skills
+    renderSkills();
+    
+    // Set saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    
+    // Animate skill bars on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.width = entry.target.dataset.progress;
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.progress').forEach(bar => observer.observe(bar));
 });
