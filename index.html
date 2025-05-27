@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedarp Arcade | Emrecan - Java Oyuncusu</title>
+    <meta name="description" content="Emrecan'ın Schedarp markası altında atari oyunu temalı Java geliştirme portfolyosu. Seviyeler, güçler ve iletişim.">
+    <meta name="author" content="Emrecan (Schedarp)">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #2a2a3e; /* Yumuşak koyu mor/mavi */
+            color: #c0c0c0; /* Açık gümüş rengi metin */
+            overflow-x: hidden;
+        }
+        .font-press-start {
+            font-family: 'Press Start 2P', cursive;
+        }
+        .crt-effect::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(
+                rgba(26, 26, 46, 0) 50%, /* Arka planla uyumlu */
+                rgba(0, 0, 0, 0.15) 50%
+            ), linear-gradient(
+                90deg, rgba(255, 127, 80, 0.04), /* Mercan tonu */
+                rgba(64, 224, 208, 0.02),  /* Turkuaz tonu */
+                rgba(255, 105, 180, 0.04) /* Pembe tonu */
+            );
+            background-size: 100% 3px, 2px 100%; /* Daha ince çizgiler */
+            z-index: -1;
+            pointer-events: none;
+            animation: crt-flicker 0.2s infinite; /* Biraz daha yavaş titreme */
+        }
+        @keyframes crt-flicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 1; }
+            100% { opacity: 0.93; }
+        }
+        .soft-pixel-border {
+            border: 3px solid #40e0d0; /* Turkuaz */
+            box-shadow: 0 0 8px rgba(64, 224, 208, 0.5), inset 0 0 4px rgba(64, 224, 208, 0.3);
+            border-radius: 8px; /* Yumuşak köşeler */
+        }
+        .soft-pixel-border-yellow {
+            border: 3px solid #ffd700; /* Altın Sarısı */
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5), inset 0 0 4px rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+        }
+        .soft-pixel-border-coral {
+             border: 3px solid #ff7f50; /* Mercan */
+            box-shadow: 0 0 8px rgba(255, 127, 80, 0.5), inset 0 0 4px rgba(255, 127, 80, 0.3);
+            border-radius: 8px;
+        }
+        .nav-active-arcade {
+            color: #ffd700; /* Altın Sarısı */
+            text-shadow: 0 0 3px #ffd700;
+        }
+        .text-shadow-soft-arcade {
+            text-shadow: 1px 1px #ff7f50; /* Mercan gölge */
+        }
+        .text-shadow-soft-title {
+             text-shadow: 2px 2px #4682b4, 0 0 8px #40e0d0; /* Çelik Mavisi gölge, Turkuaz parlama */
+        }
+        .btn-arcade-soft {
+            background-color: #40e0d0; /* Turkuaz */
+            color: #1a1a2e; /* Koyu arka plan rengi */
+            font-family: 'Press Start 2P', cursive;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px; /* Yumuşak köşeli buton */
+            box-shadow: 2px 2px 0px #20b2aa; /* Koyu Turkuaz gölge */
+            text-transform: uppercase;
+            transition: all 0.15s ease-in-out;
+            cursor: pointer;
+        }
+        .btn-arcade-soft:hover {
+            background-color: #ffd700; /* Altın Sarısı hover */
+            box-shadow: 2px 2px 0px #b8860b; /* Koyu Altın Sarısı gölge */
+            transform: translate(-1px, -1px);
+        }
+        .btn-arcade-soft:active {
+            transform: translate(1px, 1px);
+            box-shadow: none;
+        }
+        .btn-arcade-soft-coral {
+            background-color: #ff7f50; /* Mercan */
+            box-shadow: 2px 2px 0px #e9967a; /* Koyu Mercan */
+        }
+        .btn-arcade-soft-coral:hover {
+            background-color: #ffb347; /* Kayısı Rengi hover */
+            box-shadow: 2px 2px 0px #f08080; /* Açık Mercan gölge */
+        }
+
+        /* Scrollbar stilleri */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #1a1a2e; border-left: 1px solid #40e0d0;}
+        ::-webkit-scrollbar-thumb { background: #40e0d0; border-radius: 5px; border: 1px solid #1a1a2e; }
+        ::-webkit-scrollbar-thumb:hover { background: #ffd700; }
+
+        .blink-soft {
+            animation: blink-animation-soft 1.2s steps(2, start) infinite;
+        }
+        @keyframes blink-animation-soft {
+            to { opacity: 0.4; }
+        }
+        .card-arcade {
+            background-color: rgba(0,0,0, 0.3); /* Hafif transparan kart arka planı */
+            border-radius: 8px;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .card-arcade:hover {
+            transform: translateY(-4px);
+        }
+        .image-pixelated {
+            image-rendering: pixelated; /* Sadece belirli görsellerde piksel efekti */
+        }
+    </style>
+</head>
+<body class="crt-effect">
+
+    <header class="bg-black bg-opacity-60 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b-2 border-turquoise-500/30 py-2 shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#hero-arcade" class="font-press-start text-2xl text-yellow-400 hover:text-yellow-300 transition-colors text-shadow-soft-arcade">
+                    SCHEDARP<span class="text-coral-500 blink-soft">_</span>ARCADE
+                </a>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="#hero-arcade" class="nav-link-arcade px-3 py-2 text-sm hover:text-yellow-400 transition-colors rounded-md">ANA_MENU</a>
+                    <a href="#about-arcade" class="nav-link-arcade px-3 py-2 text-sm hover:text-yellow-400 transition-colors rounded-md">OYUNCU_PROFILI</a>
+                    <a href="#skills-arcade" class="nav-link-arcade px-3 py-2 text-sm hover:text-yellow-400 transition-colors rounded-md">GUCLER</a>
+                    <a href="#projects-arcade" class="nav-link-arcade px-3 py-2 text-sm hover:text-yellow-400 transition-colors rounded-md">SEVIYELER</a>
+                    <a href="#contact-arcade" class="nav-link-arcade px-3 py-2 text-sm hover:text-yellow-400 transition-colors rounded-md">YUKSEK_SKORLAR</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button-arcade" class="text-turquoise-400 hover:text-yellow-400 focus:outline-none p-2 rounded-md">
+                        <i class="fas fa-gamepad text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu-arcade" class="md:hidden bg-gray-950 bg-opacity-95 mobile-menu transform -translate-x-full fixed top-0 left-0 h-full w-64 shadow-2xl pt-16 border-r-2 border-turquoise-500/30 rounded-r-lg">
+            <a href="#hero-arcade" class="nav-link-arcade block px-6 py-3 text-lg hover:bg-turquoise-500 hover:text-black transition-colors rounded-md mx-2 my-1">ANA_MENU</a>
+            <a href="#about-arcade" class="nav-link-arcade block px-6 py-3 text-lg hover:bg-turquoise-500 hover:text-black transition-colors rounded-md mx-2 my-1">OYUNCU_PROFILI</a>
+            <a href="#skills-arcade" class="nav-link-arcade block px-6 py-3 text-lg hover:bg-turquoise-500 hover:text-black transition-colors rounded-md mx-2 my-1">GUCLER</a>
+            <a href="#projects-arcade" class="nav-link-arcade block px-6 py-3 text-lg hover:bg-turquoise-500 hover:text-black transition-colors rounded-md mx-2 my-1">SEVIYELER</a>
+            <a href="#contact-arcade" class="nav-link-arcade block px-6 py-3 text-lg hover:bg-turquoise-500 hover:text-black transition-colors rounded-md mx-2 my-1">YUKSEK_SKORLAR</a>
+            <button id="mobile-menu-close-button-arcade" class="absolute top-5 right-5 text-coral-500 hover:text-yellow-400 p-1">
+                <i class="fas fa-times-circle text-3xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <section id="hero-arcade" class="min-h-screen flex flex-col items-center justify-center text-center relative p-4 pt-24">
+        <h1 class="font-press-start text-5xl sm:text-6xl md:text-7xl text-turquoise-400 text-shadow-soft-title uppercase">
+            EMRECAN
+        </h1>
+        <p class="mt-4 font-press-start text-xl sm:text-2xl text-yellow-400 text-shadow-soft-arcade">
+            &lt; Java Oyuncusu / Schedarp Sistemi &gt;
+        </p>
+        <img src="https://placehold.co/200x100/2a2a3e/40e0d0?text=OYUNCU_1_HAZIR" alt="Oyuncu 1 Hazır" class="my-8 soft-pixel-border border-turquoise-400 image-pixelated" onerror="this.src='https://placehold.co/200x100/2a2a3e/ff7f50?text=RESIM_HATASI'; this.onerror=null;">
+        <p class="mt-2 text-xl text-slate-300 max-w-xl mx-auto leading-relaxed">
+            // KOD EVRENİNDE YENİ BİR MACERA BAŞLIYOR... SCHEDARP'IN GÜCÜYLE, JAVA İLE YÜKSEK SKORLARA ULAŞMAYA HAZIRIM!
+        </p>
+        <div class="mt-12">
+            <a href="#projects-arcade" class="btn-arcade-soft text-lg">
+                MACERAYA BAŞLA!
+            </a>
+        </div>
+        <p class="font-press-start text-sm text-gray-500 absolute bottom-12 left-1/2 -translate-x-1/2 blink-soft">JETON ATINIZ</p>
+    </section>
+
+    <section id="about-arcade" class="py-20 md:py-28">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14 md:mb-20">
+                <h2 class="font-press-start text-3xl md:text-4xl text-yellow-400 text-shadow-soft-arcade uppercase">// OYUNCU_PROFILI</h2>
+            </div>
+            <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 bg-black bg-opacity-40 p-6 md:p-10 soft-pixel-border shadow-2xl">
+                <div class="lg:w-1/3">
+                    <img src="https://placehold.co/300x300/1a1a2e/ffd700?text=EMRECAN_AVATAR" alt="Emrecan Avatarı" class="w-52 h-52 md:w-72 md:h-72 mx-auto soft-pixel-border-yellow object-cover image-pixelated" onerror="this.src='https://placehold.co/300x300/1a1a2e/ff7f50?text=AVATAR_HATASI'; this.onerror=null;">
+                </div>
+                <div class="lg:w-2/3 text-slate-300">
+                    <div id="aboutMeTextContainerArcade" class="space-y-5 text-lg leading-relaxed">
+                        <p><span class="text-yellow-400 font-semibold">Oyuncu Adı:</span> Emrecan</p>
+                        <p><span class="text-yellow-400 font-semibold">Takım Kodu:</span> Schedarp</p>
+                        <p><span class="text-yellow-400 font-semibold">Ana Görev:</span> Java'nın büyülü dünyasında, kodlarla destanlar yazarak dijital evrene unutulmaz eserler bırakmak. Her bir algoritma, yeni bir keşif yolculuğu!</p>
+                        <p><span class="text-yellow-400 font-semibold">Özel Güçler:</span> Algoritmik düşünce, zarif kod mimarisi, karmaşık problemleri çözme yeteneği ve en son teknolojilere anında uyum sağlama.</p>
+                        <p><span class="text-yellow-400 font-semibold">Bonus Seviye:</span> Boş zamanlarımda eski atari salonlarının tozlu hazinelerini gün yüzüne çıkarır, yeni programlama dillerinin 'final boss'larına meydan okur ve bilim kurgu evrenlerinde kaybolurum. Kod, benim için bir tutku!</p>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills-arcade" class="py-20 md:py-28 bg-gray-950 bg-opacity-60">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14 md:mb-20">
+                <h2 class="font-press-start text-3xl md:text-4xl text-turquoise-400 text-shadow-soft-title uppercase">// GÜÇLER & YETENEKLER</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-yellow-400">
+                    <i class="fas fa-bolt text-6xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">JAVA YILDIRIMI</h3>
+                    <p class="text-xs text-slate-400 mt-1">Çekirdek Java & OOP</p>
+                </div>
+                <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-yellow-400">
+                    <i class="fas fa-cogs text-6xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">SPRING MOTORU</h3>
+                    <p class="text-xs text-slate-400 mt-1">Spring Boot & MVC</p>
+                </div>
+                <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-yellow-400">
+                    <i class="fas fa-shield-alt text-6xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">SQL VERİ KALKANI</h3>
+                    <p class="text-xs text-slate-400 mt-1">Veritabanı Yönetimi</p>
+                </div>
+                <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-yellow-400">
+                    <i class="fas fa-code text-6xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">REST API IŞINI</h3>
+                    <p class="text-xs text-slate-400 mt-1">API Tasarımı</p>
+                </div>
+                 <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-coral-500">
+                    <i class="fab fa-git-square text-6xl text-coral-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">GIT ZAMAN BÜKÜCÜ</h3>
+                     <p class="text-xs text-slate-400 mt-1">Versiyon Kontrolü</p>
+                </div>
+                <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-coral-500">
+                    <i class="fas fa-ghost text-6xl text-coral-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">DOCKER HAYALET GEMİSİ</h3>
+                    <p class="text-xs text-slate-400 mt-1">Konteyner Teknolojisi</p>
+                </div>
+                 <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-coral-500">
+                    <i class="fas fa-user-secret text-6xl text-coral-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">GÜVENLİK PROTOKOLÜ</h3>
+                    <p class="text-xs text-slate-400 mt-1">Uygulama Güvenliği</p>
+                </div>
+                 <div class="card-arcade bg-black bg-opacity-50 p-6 rounded-lg soft-pixel-border text-center hover:border-coral-500">
+                    <i class="fas fa-rocket text-6xl text-coral-400 mb-4"></i>
+                    <h3 class="text-md font-semibold text-turquoise-400">AGILE JETPACK</h3>
+                    <p class="text-xs text-slate-400 mt-1">Çevik Metodolojiler</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects-arcade" class="py-20 md:py-28">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14 md:mb-20"> <h2 class="font-press-start text-3xl md:text-4xl text-yellow-400 text-shadow-soft-arcade uppercase">// GEÇİLEN SEVİYELER</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
+                <div class="card-arcade bg-black bg-opacity-50 p-1 soft-pixel-border-yellow hover:shadow-xl hover:shadow-yellow-500/30 flex flex-col">
+                    <div class="bg-gray-950 bg-opacity-70 p-5 flex-grow flex flex-col rounded-md">
+                        <img src="https://placehold.co/600x400/1a1a2e/ffd700?text=SEVIYE_1_GORSEL" alt="Seviye 1 Görseli" class="w-full h-52 object-cover mb-5 soft-pixel-border border-yellow-500/70 image-pixelated rounded-sm" onerror="this.src='https://placehold.co/600x400/1a1a2e/ff7f50?text=RESIM_HATASI'; this.onerror=null;">
+                        <h3 class="font-press-start text-xl text-yellow-400 mb-3">SEVİYE 1: API KALESİ FETHİ</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed flex-grow">
+                            // Java Spring Boot ile korunan bu dijital kalede, RESTful API'ler düşman kod böceklerini ve veri hırsızlarını püskürtüyor. Kullanıcı yönetimi ve değerli veri hazineleri güvende!
+                        </p>
+                        <div class="mb-4">
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-yellow-700 bg-opacity-80 text-black mr-1 mb-1">Java</span>
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-yellow-700 bg-opacity-80 text-black mr-1 mb-1">Spring</span>
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-yellow-700 bg-opacity-80 text-black mr-1 mb-1">SQL</span>
+                        </div>
+                        <a href="https://github.com/emrecanesenn" target="_blank" rel="noopener noreferrer" class="mt-auto block w-full text-center btn-arcade-soft text-xs py-3">
+                            KODU GÖR
+                        </a>
+                    </div>
+                </div>
+                 <div class="card-arcade bg-black bg-opacity-50 p-1 soft-pixel-border-coral hover:shadow-xl hover:shadow-coral-500/30 flex flex-col">
+                    <div class="bg-gray-950 bg-opacity-70 p-5 flex-grow flex flex-col rounded-md">
+                        <img src="https://placehold.co/600x400/1a1a2e/ff7f50?text=SEVIYE_2_GORSEL" alt="Seviye 2 Görseli" class="w-full h-52 object-cover mb-5 soft-pixel-border border-coral-500/70 image-pixelated rounded-sm" onerror="this.src='https://placehold.co/600x400/1a1a2e/ff7f50?text=RESIM_HATASI'; this.onerror=null;">
+                        <h3 class="font-press-start text-xl text-coral-400 mb-3">SEVİYE 2: PİKSEL ARENASI</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed flex-grow">
+                            // JavaFX ile hayat bulan bu retro arenada, pikseller amansız bir mücadele içinde! Basit ama eğlenceli bir oyun motoru ve kurnaz düşman yapay zekası içerir.
+                        </p>
+                        <div class="mb-4">
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-coral-700 bg-opacity-80 text-black mr-1 mb-1">Java</span>
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-coral-700 bg-opacity-80 text-black mr-1 mb-1">JavaFX</span>
+                        </div>
+                        <a href="https://github.com/emrecanesenn" target="_blank" rel="noopener noreferrer" class="mt-auto block w-full text-center btn-arcade-soft btn-arcade-soft-coral text-xs py-3">
+                            KODU GÖR
+                        </a>
+                    </div>
+                </div>
+                <div class="card-arcade bg-black bg-opacity-50 p-1 soft-pixel-border hover:shadow-xl hover:shadow-turquoise-500/30 flex flex-col">
+                     <div class="bg-gray-950 bg-opacity-70 p-5 flex-grow flex flex-col rounded-md">
+                        <img src="https://placehold.co/600x400/1a1a2e/40e0d0?text=YENI_SEVIYE_TASARLANIYOR" alt="Yeni Seviye Tasarlanıyor" class="w-full h-52 object-cover mb-5 soft-pixel-border border-turquoise-500/70 image-pixelated opacity-60 rounded-sm" onerror="this.src='https://placehold.co/600x400/1a1a2e/ff7f50?text=RESIM_HATASI'; this.onerror=null;">
+                        <h3 class="font-press-start text-xl text-turquoise-400 mb-3">SEVİYE 3: GİZEMLİ KOD (YAKINDA)</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed flex-grow">
+                            // Yeni bir macera için kodlar derleniyor... Schedarp evreninde daha zorlu 'boss' savaşları ve daha karmaşık sistemler için hazır olun!
+                        </p>
+                        <div class="mb-4">
+                             <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-turquoise-700 bg-opacity-80 text-black mr-1 mb-1">Java</span>
+                             <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-sm bg-gray-700 bg-opacity-80 text-black mr-1 mb-1">???</span>
+                        </div>
+                        <button disabled class="mt-auto block w-full text-center btn-arcade-soft text-xs opacity-50 cursor-default py-3">
+                            BEKLEMEDE...
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-arcade" class="py-20 md:py-28 bg-gray-950 bg-opacity-60">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-press-start text-3xl md:text-4xl text-turquoise-400 text-shadow-soft-title uppercase mb-10 md:mb-14">// YÜKSEK_SKORLAR & İLETİŞİM</h2>
+            <p class="text-xl text-slate-300 mb-12 md:mb-16 max-w-lg mx-auto leading-relaxed">
+                // Yeni bir 'multiplayer' macerasına atılmak veya sadece 'selam' çakmak için aşağıdaki iletişim kanallarını kullanabilirsiniz!
+            </p>
+            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+                <a href="https://github.com/emrecanesenn" target="_blank" rel="noopener noreferrer" class="btn-arcade-soft text-sm flex items-center px-6 py-3">
+                    <i class="fab fa-github text-2xl mr-2"></i> GitHub Skorları
+                </a>
+                <a href="https://linkedin.com/in/esenemrecan" target="_blank" rel="noopener noreferrer" class="btn-arcade-soft text-sm flex items-center px-6 py-3">
+                    <i class="fab fa-linkedin text-2xl mr-2"></i> LinkedIn Ağı
+                </a>
+                <a href="mailto:schedarp@gmail.com" class="btn-arcade-soft btn-arcade-soft-coral text-sm flex items-center px-6 py-3">
+                    <i class="fas fa-envelope text-2xl mr-2"></i> Mesaj Gönder
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 bg-black bg-opacity-80 border-t-3 border-turquoise-500/50 text-slate-400 text-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="font-press-start text-xs">&copy; <span id="currentYearArcade"></span> SCHEDARP_ARCADE // EMRECAN</p>
+            <p class="text-xs mt-2">// OYUN BİTTİ <span class="blink-soft text-coral-500">(ŞİMDİLİK)</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobil menü
+        const mobileMenuButtonArcade = document.getElementById('mobile-menu-button-arcade');
+        const mobileMenuCloseButtonArcade = document.getElementById('mobile-menu-close-button-arcade');
+        const mobileMenuArcade = document.getElementById('mobile-menu-arcade');
+        const navLinksArcade = document.querySelectorAll('#mobile-menu-arcade .nav-link-arcade, header nav .nav-link-arcade');
+
+        function openMobileMenuArcade() {
+            if(mobileMenuArcade) mobileMenuArcade.classList.replace('-translate-x-full', 'translate-x-0');
+        }
+        function closeMobileMenuArcade() {
+            if(mobileMenuArcade) mobileMenuArcade.classList.replace('translate-x-0', '-translate-x-full');
+        }
+        if(mobileMenuButtonArcade) mobileMenuButtonArcade.addEventListener('click', openMobileMenuArcade);
+        if(mobileMenuCloseButtonArcade) mobileMenuCloseButtonArcade.addEventListener('click', closeMobileMenuArcade);
+        
+        navLinksArcade.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                if (mobileMenuArcade && mobileMenuArcade.classList.contains('translate-x-0')) {
+                    closeMobileMenuArcade();
+                }
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('header')?.offsetHeight || 70;
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerOffset;
+                
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        const currentYearArcadeElement = document.getElementById('currentYearArcade');
+        if(currentYearArcadeElement) currentYearArcadeElement.textContent = new Date().getFullYear();
+
+        const sectionsArcade = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', navHighlighterArcade);
+        function navHighlighterArcade() {
+            let scrollY = window.pageYOffset;
+            const headerOffsetGlobal = document.querySelector('header')?.offsetHeight || 70;
+            
+            sectionsArcade.forEach(current => {
+                const sectionHeight = current.offsetHeight;
+                const sectionTop = current.offsetTop - headerOffsetGlobal - 60; 
+                let sectionId = current.getAttribute('id');
+                
+                document.querySelectorAll('header nav .nav-link-arcade, #mobile-menu-arcade .nav-link-arcade').forEach(link => {
+                    if (link.getAttribute('href').substring(1) === sectionId) {
+                        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                            link.classList.add('nav-active-arcade');
+                        } else {
+                            link.classList.remove('nav-active-arcade');
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Gemini API ile ilgili JavaScript kodları kaldırıldı.
+    </script>
+</body>
+</html>
