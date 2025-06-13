@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emrecan Eşen | Yazılım Geliştirici Adayı</title>
+    <!-- CSS Dosyası -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome ikonları için (GitHub, LinkedIn vb.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- GİRİŞ BÖLÜMÜ -->
+    <header class="hero">
+        <div class="container">
+            <h1>Emrecan Eşen</h1>
+            <p class="subtitle">Java ve Nesne Yönelimli Programlama dünyasını keşfeden, problem çözmeye tutkulu bir yazılım geliştirici adayı.</p>
+            <div class="social-links">
+                <a href="https://github.com/emrecanesenn" target="_blank" aria-label="GitHub Profilim"><i class="fab fa-github"></i></a>
+                <!-- Not: LinkedIn profilin varsa '#' yerine linkini yapıştır -->
+                <a href="#" target="_blank" aria-label="LinkedIn Profilim"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HAKKIMDA BÖLÜMÜ -->
+        <section id="about">
+            <h2>Hakkımda</h2>
+            <p>
+                Merhaba, ben Emrecan. Teknolojiye ve özellikle yazılımın karmaşık problemleri nasıl zarif çözümlere dönüştürdüğüne büyük bir ilgi duyuyorum. Şu anda Java diline odaklanarak kendimi geliştiriyorum. Benim için kod yazmak, sadece komutları sıralamak değil; bir sistemin en temel parçalarını anlamak, onlar arasındaki ilişkileri sorgulamak ve en verimli yapıyı kurmak üzerine kurulu bir keşif süreci.
+            </p>
+            <p>
+                Öğrenme yolculuğumda teorik bilgiyi, RIFT: Escape gibi projelerle pratiğe dökmeye ve karşılaştığım zorlukların üzerine giderek kendimi geliştirmeye inanıyorum.
+            </p>
+        </section>
+
+        <!-- PROJELER BÖLÜMÜ -->
+        <section id="projects">
+            <h2>Projelerim</h2>
+            <div class="project-card">
+                <img src="./assets/rift-portal.png" alt="RIFT: Escape Oyunu Banner">
+                <div class="project-info">
+                    <h3>RIFT: Escape - Konsol Tabanlı RPG</h3>
+                    <p class="project-description">
+                        RIFT, Java ile geliştirdiğim, sıra tabanlı bir rol yapma oyunudur. Oyuncular, farklı karakter sınıflarından birini seçerek tehlikeli zindanları keşfeder, canavarlarla savaşır ve esir düştükleri diyardan kaçmak için özel eşyalar toplar.
+                    </p>
+                    <div class="project-learnings">
+                        <h4>Bu Projeden Öğrendiklerim:</h4>
+                        <p>Bu proje, Nesne Yönelimli Programlama'nın temellerini (Kalıtım, Soyutlama, Kapsülleme) somut bir şekilde uygulamamı sağladı. Özellikle `static` metotlar ile nesneye yönelik metotlar arasındaki farkı, bir `GameManager` sınıfı üzerinden oyun durumunu yönetmeyi ve kod tekrarını önlemek için "refactoring" yapmanın önemini derinlemesine kavradım. Proje dokümantasyonunun (`README.md`) ne kadar değerli olduğunu da bu süreçte deneyimledim.</p>
+                    </div>
+                    <div class="project-tech">
+                        <span>Java</span>
+                    </div>
+                    <a href="https://github.com/emrecanesenn/RiftGame" class="btn" target="_blank">GitHub'da Görüntüle</a>
+                </div>
+            </div>
+            <!-- Gelecekte yeni projeler için bu kartı kopyalayarak çoğaltabilirsin -->
+        </section>
+
+        <!-- YETENEKLER BÖLÜMÜ -->
+        <section id="skills">
+            <h2>Yeteneklerim</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Diller</h3>
+                    <ul>
+                        <li>Java</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Araçlar & Teknolojiler</h3>
+                    <ul>
+                        <li>Git</li>
+                        <li>GitHub</li>
+                        <li>IntelliJ IDEA</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Kavramlar</h3>
+                    <ul>
+                        <li>Nesne Yönelimli Programlama (OOP)</li>
+                        <li>Veri Yapıları</li>
+                        <li>Algoritmalar</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- İLETİŞİM BÖLÜMÜ -->
+    <footer class="contact">
+        <div class="container">
+            <h2>İletişim</h2>
+            <p>Projelerim veya olası iş birlikleri hakkında konuşmak isterseniz, benimle iletişime geçmekten çekinmeyin.</p>
+            <!-- Not: 'ornek@email.com' yerine kendi e-posta adresini yazmalısın -->
+            <a href="mailto:ornek@email.com" class="email-link">ornek@email.com</a>
+        </div>
+    </footer>
+
+</body>
+</html>
